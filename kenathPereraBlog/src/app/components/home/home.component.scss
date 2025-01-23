@@ -4,6 +4,23 @@
     background-position: center;
     width: 100%;  /* Full viewport width */
     height: 80vh; /* Full viewport height */
+
+    @media (max-width: 1200px) {
+      }
+      @media (max-width: 1024px) {
+        margin-top: -30%;
+    margin-bottom: -28%;
+      }
+      @media (max-width: 768px) {
+        margin-top: -26%;
+    margin-bottom: -24%;
+      }
+    
+      @media (max-width: 480px) {
+        margin-top: -45%;
+    margin-bottom: -40%;
+      }
+    
 }
 
 .fade-scale {
