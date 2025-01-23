@@ -6,10 +6,60 @@
     height: 80vh; /* Full viewport height */
 }
 
+.fade-scale {
+    animation: fadeScale 1.5s ease-in-out forwards;
+
+    @keyframes fadeScale {
+        0% {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 1.5s ease-in-out forwards;
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+.slide-in {
+    position: relative;
+    left: -100%;
+    animation: slideIn 1.5s ease-out forwards;
+
+    @keyframes slideIn {
+        to {
+            left: 0;
+        }
+    }
+}
+
+.color-transition {
+    transition: color 0.5s ease-in-out;
+
+    &:hover {
+        color: #ff5733;
+    }
+}
+
 .profile-info{
     h1 {
         font-size: 3rem;
         font-weight: bold;
+        
+        
     }
 
     p {
