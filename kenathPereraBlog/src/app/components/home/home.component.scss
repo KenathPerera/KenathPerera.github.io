@@ -1,0 +1,24 @@
+.hero {
+    background: url("/images/banner.jpg") no-repeat center center;
+    background-size: contain;  /* Ensures the whole image fits */
+    background-position: center;
+    width: 100%;  /* Full viewport width */
+    height: 80vh; /* Full viewport height */
+}
+
+.profile-info{
+    h1 {
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    .profile-img {
+        max-width: 150px;
+        border-radius: 50%;
+        margin-top: 20px;
+    }
+}
