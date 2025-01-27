@@ -1,15 +1,13 @@
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { Component } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from "./components/navbar/navbar.component";
-import { HomeComponent } from "./components/home/home.component";
-import { ProjectsComponent } from "./components/projects/projects.component";
-import { FooterComponent } from "./components/footer/footer.component";
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, HomeComponent, ProjectsComponent, FooterComponent,CommonModule],
+  imports: [RouterOutlet, CommonModule, NavbarComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

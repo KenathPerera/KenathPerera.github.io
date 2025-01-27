@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Roles Authorization</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #212529;
+            color: #f8f9fa;
+            font-family: monospace;
+            padding: 20px;
+        }
+
+        pre {
+            background: #343a40;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #495057;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <pre>
+        <code>
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Security.Claims;
+
+public sealed class ApplicationRolesAuthorize : AuthorizeAttribute, IAuthorizationFilter 
+{
+    private readonly RoleEnum[] _roles;
+
+    public ApplicationRolesAuthorize(params RoleEnum[] roles) {
+        _roles = roles;
+    }
+
+    public void OnAuthorization(AuthorizationFilterContext context) {
+        var user = context.HttpContext.User;
+        var userRoles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+        var authorized = _roles.Any(role => userRoles.Contains(role.ToString()));
+        if (!authorized) {
+            context.Result = new ForbidResult();
+        }
+    }
+}
+        </code>
+    </pre>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<div class="container">
+    <header class="header mt-4">
+        <h1>Building Custom Authorization with .NET API</h1>
+        <p class="subtitle">High-performance back-end solutions for Custom Authorization</p>
+    </header>
+    <section>
+        <h2>Introduction</h2>
+        <p> Security is a critical aspect of any web application, and implementing role-based authorization is one of
+            the key measures to protect sensitive resources. In .NET APIs, custom authorization filters provide a
+            flexible way to control access to endpoints based on user roles. This article explores how to implement a
+            custom authorization filter in a .NET API using the IAuthorizationFilter interface.</p>
+    </section>
+    <section>
+        <h2>Description</h2>
+        <p>In this article, I've explored how to implement a custom role-based authorization filter in a .NET API. The
+            ApplicationRolesAuthorize attribute provides an efficient way to secure endpoints by validating user roles
+            using claims-based authentication. This method helps create more secure and scalable applications by
+            centralizing access control logic.</p>
+    </section>
+    <section>
+        <h2>.Net Custom Class Usage</h2>
+        <p>
+            The provided code snippet demonstrates a custom authorization attribute named ApplicationRolesAuthorize that
+            extends the AuthorizeAttribute and implements the IAuthorizationFilter interface. This attribute enables
+            role-based access control by evaluating user claims and restricting access to specified roles.</p>
+        <iframe src="code_snippet/dotnet_auth/class.html" width="100%" height="400px" frameborder="0"></iframe>
+
+        <h5>Explanation</h5>
+        <ul>
+            <li>Class Definition:
+                <ul>
+                    <li>The ApplicationRolesAuthorize class is declared as sealed to prevent further inheritance.</li>
+                    <li>It extends the AuthorizeAttribute to leverage existing authorization mechanisms and implements
+                        the
+                        IAuthorizationFilter interface.</li>
+                </ul>
+            </li>
+            <li> Constructor:
+                <ul>
+                    <li>Accepts an array of RoleEnum (custom-defined enumeration for roles).</li>
+                    <li>Stores the provided roles in the _roles field for later use.</li>
+                </ul>
+            </li>
+            <li> OnAuthorization Method:
+                <ul>
+                    <li>Retrieves the authenticated user from the HTTP context.</li>
+                    <li>Extracts user roles from claims of type ClaimTypes.Role.</li>
+                    <li>Checks if any of the provided roles in _roles exist in the user's role claims.</li>
+                    <li>If authorization fails, it sets the context result to ForbidResult(), blocking access.</li>
+                </ul>
+            </li>
+        </ul>
+
+    </section>
+    <section>
+        <h2>.Net API Controller Usage</h2>
+        <iframe src="code_snippet/dotnet_auth/controller.html" width="100%" height="400px" frameborder="0"></iframe>
+        <h5>Explanation of usage:</h5>
+        <ul>
+            <li>The GetProjects endpoint is protected with ApplicationRolesAuthorize requiring Admin or Manager roles.
+            </li>
+            <li>Users without these roles will receive a 403 Forbidden response.</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Advantages of Using Custom Authorization Filters</h2>
+        <ul>
+            <li>
+                Centralized Authorization Logic:
+                <ul>
+                    <li>Keeps authorization logic separate from controller actions, improving code maintainability.</li>
+
+                </ul>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                Flexible Role Management:
+                <ul>
+                    <li>Easily modify or extend roles without changing business logic.</li>
+
+                </ul>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                Better Security:
+                <ul>
+                    <li>Ensures unauthorized users cannot access protected resources.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <section>
+        <h2>Integration with Angular Frontend</h2>
+        <p>In an Angular frontend, you can consume the API with authorization headers like this:</p>
+        <iframe src="code_snippet/dotnet_auth/frontend.html" width="100%" height="400px" frameborder="0"></iframe>
+
+    </section>
+</div>
