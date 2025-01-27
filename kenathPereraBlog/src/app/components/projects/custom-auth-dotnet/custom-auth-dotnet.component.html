@@ -3,6 +3,11 @@
         <h1>Building Custom Authorization with .NET API</h1>
         <p class="subtitle">High-performance back-end solutions for Custom Authorization</p>
     </header>
+
+
+
+
+
     <section>
         <h2>Introduction</h2>
         <p> Security is a critical aspect of any web application, and implementing role-based authorization is one of
@@ -23,8 +28,35 @@
             The provided code snippet demonstrates a custom authorization attribute named ApplicationRolesAuthorize that
             extends the AuthorizeAttribute and implements the IAuthorizationFilter interface. This attribute enables
             role-based access control by evaluating user claims and restricting access to specified roles.</p>
-        <iframe src="code_snippet/dotnet_auth/class.html" width="100%" height="400px" frameborder="0"></iframe>
-
+        <pre>
+            <code #classCode class="javascript">
+        using Microsoft.AspNetCore.Mvc.Filters;
+        using Microsoft.AspNetCore.Mvc;
+        using System.Linq;
+        using System.Security.Claims;
+        
+        public sealed class ApplicationRolesAuthorize : AuthorizeAttribute, IAuthorizationFilter 
+        {{ '{' }}
+            private readonly RoleEnum[] _roles;
+        
+            public ApplicationRolesAuthorize(params RoleEnum[] roles) 
+            {{ '{' }}
+                _roles = roles;
+            {{ '}' }}
+        
+            public void OnAuthorization(AuthorizationFilterContext context) 
+            {{ '{' }}
+                var user = context.HttpContext.User;
+                var userRoles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+                var authorized = _roles.Any(role => userRoles.Contains(role.ToString()));
+                if (!authorized) 
+                {{ '{' }}
+                    context.Result = new ForbidResult();
+                {{ '}' }}
+            {{ '}' }}
+        {{ '}' }}
+            </code>
+        </pre>
         <h5>Explanation</h5>
         <ul>
             <li>Class Definition:
@@ -54,7 +86,31 @@
     </section>
     <section>
         <h2>.Net API Controller Usage</h2>
-        <iframe src="code_snippet/dotnet_auth/controller.html" width="100%" height="400px" frameborder="0"></iframe>
+        <pre>
+            <code #controllerCode class="javascript">
+        public enum RoleEnum
+        &#123;
+            Admin,
+            User,
+            Manager
+        &#125;
+        
+        [ApiController]
+        [Route(&quot;api/[controller]&quot;)]
+        public class ProjectController : ControllerBase
+        &#123;
+            [HttpGet]
+            [ApplicationRolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+            public IActionResult GetProjects()
+            &#123;
+                return Ok(new &#123; message = &quot;Authorized access to projects&quot; &#125;);
+            &#125;
+        &#125;
+            </code>
+        </pre>
+
+
+
         <h5>Explanation of usage:</h5>
         <ul>
             <li>The GetProjects endpoint is protected with ApplicationRolesAuthorize requiring Admin or Manager roles.
@@ -94,7 +150,37 @@
     <section>
         <h2>Integration with Angular Frontend</h2>
         <p>In an Angular frontend, you can consume the API with authorization headers like this:</p>
-        <iframe src="code_snippet/dotnet_auth/frontend.html" width="100%" height="400px" frameborder="0"></iframe>
+        <pre>
+            <code #angularCode class="javascript">
+        import &#123; HttpClient, HttpHeaders &#125; from '&#64;angular/common/http';
+        import &#123; Component &#125; from '&#64;angular/core';
+        
+        &#64;Component(&#123;
+          selector: 'app-projects',
+          templateUrl: './projects.component.html',
+          styleUrls: ['./projects.component.scss']
+        &#125;)
+        export class ProjectsComponent &#123;
+          projects: any[] = [];
+        
+          constructor(private http: HttpClient) &#123; &#125;
+        
+          getProjects() &#123;
+            const headers = new HttpHeaders(&#123;
+              'Authorization': `Bearer your-jwt-token-here`
+            &#125;);
+        
+            this.http.get('https://your-api-url/api/project', &#123; headers &#125;)
+              .subscribe(response => &#123;
+                this.projects = response;
+              &#125;, error => &#123;
+                console.error('Unauthorized access', error);
+              &#125;);
+          &#125;
+        &#125;
+            </code>
+        </pre>
+
 
     </section>
 </div>
